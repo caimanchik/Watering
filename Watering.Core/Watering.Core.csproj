@@ -8,15 +8,8 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Watering.Core\Watering.Core.csproj" />
-<<<<<<< HEAD
-      <ProjectReference Include="..\Watering.Domain\Watering.Domain.csproj" />
-=======
-      <ProjectReference Include="..\Watering.Core\Watering.Core.csproj" />
->>>>>>> 24aebb5 (реализация ядра)
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
+      <PackageReference Include="System.Text.Json" Version="8.0.5" />
     </ItemGroup>
 
 </Project>

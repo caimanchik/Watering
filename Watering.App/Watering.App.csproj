@@ -14,7 +14,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Watering.Console\Watering.Console.csproj" />
+      <ProjectReference Include="..\Watering.Core\Watering.Core.csproj" />
+<<<<<<< HEAD
       <ProjectReference Include="..\Watering.Domain\Watering.Domain.csproj" />
+=======
+      <ProjectReference Include="..\Watering.Core\Watering.Core.csproj" />
+>>>>>>> 24aebb5 (реализация ядра)
     </ItemGroup>
 
     <ItemGroup>

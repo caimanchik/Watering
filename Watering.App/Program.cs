@@ -6,7 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Watering.Console.Extensions;
 using Watering.Console.Services.Interfaces;
-using Watering.Domain.Extensions;
+using Watering.Core.Extensions;
+using Watering.Core.Services.Interfaces;
 
 var hostBuilder = Host.CreateDefaultBuilder()
     .ConfigureLogging(logging =>
@@ -21,13 +22,12 @@ var hostBuilder = Host.CreateDefaultBuilder()
     .ConfigureServices((context, services) =>
     {
         services
-            .ConfigureDomain()
+            .ConfigureCore()
             .ConfigureConsoleApp();
         // services.Configure<Options>(c => context.Configuration.Bind("Options", c)); // пригодится в следующей лабораторной работе
     });
 
 var app = hostBuilder.Build();
 
-app.Services
-    .GetRequiredService<ICommandService>()
-    .ExecuteAsync();
+app.Services.RunCore();
+await app.RunAsync();
