@@ -1,6 +1,6 @@
-using Watering.Core.Settings.Enums;
+using Watering.Core.Entites.Enums;
 
-namespace Watering.Core.Settings;
+namespace Watering.Core.Entites.Settings;
 
 public record WateringSettings : SettingsBase
 {

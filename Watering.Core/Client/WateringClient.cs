@@ -1,11 +1,12 @@
 using System.Text.Json;
+using Watering.Core.Client.Interfaces;
 using Watering.Core.Entites;
-using Watering.Core.Services.Interfaces;
-using Watering.Core.Settings;
+using Watering.Core.Entites.Info;
+using Watering.Core.Entites.Settings;
 
-namespace Watering.Core.Services;
+namespace Watering.Core.Client;
 
-public class WateringClient : IWateringClient, IControlClient, IPipeInfoService
+public class WateringClient : IWateringClient, IControlClient
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -17,18 +18,22 @@ public class WateringClient : IWateringClient, IControlClient, IPipeInfoService
     public void RegisterSettingsChange<T>(Action<T> action) where T : SettingsBase 
         => OnReceive += GetOnReceiveAction(action);
 
+    public void RegisterInfoChange<T>(Action<T> action) where T : InfoBase
+        => OnReceive += GetOnReceiveAction(action);
+
+    public void SendInfo(InfoBase info)
+    {
+        var jsonString = JsonSerializer.Serialize(info, info.GetType(), JsonOptions);
+        OnReceive?.Invoke(jsonString);
+    }
+
     public void SendSettingsChange(SettingsBase settings)
     {
         var jsonString = JsonSerializer.Serialize(settings, settings.GetType(), JsonOptions);
         OnReceive?.Invoke(jsonString);
     }
-    
-    public void PipeInfo(InfoBase info)
-    {
-        // todo
-    }
 
-    private static Action<string> GetOnReceiveAction<T>(Action<T> action) where T : SettingsBase
+    private static Action<string> GetOnReceiveAction<T>(Action<T> action)
     {
         return received =>
         {

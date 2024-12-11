@@ -1,4 +1,4 @@
-namespace Watering.Core.Settings.Enums;
+namespace Watering.Core.Entites.Enums;
 
 public enum SprinklerState
 {

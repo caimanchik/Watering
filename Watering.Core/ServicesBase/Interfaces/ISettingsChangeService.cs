@@ -1,4 +1,4 @@
-namespace Watering.Core.Services.Interfaces;
+namespace Watering.Core.ServicesBase.Interfaces;
 
 internal interface ISettingsChangeService
 {

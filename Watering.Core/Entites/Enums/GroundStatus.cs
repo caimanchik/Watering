@@ -1,4 +1,4 @@
-namespace Watering.Core.Entites;
+namespace Watering.Core.Entites.Enums;
 
 public enum GroundStatus
 {
