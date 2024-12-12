@@ -30,11 +30,11 @@ public static class ConfigurationExtensions
             .AddSingleton<IInfoService, InfoService>();
         
         services
+            .AddHostedService<IInfoService>(s => s.GetRequiredService<IInfoService>())
             .AddHostedService<IGroundStateService>(s => s.GetRequiredService<IGroundStateService>())
             .AddHostedService<ISensorService>(s => s.GetRequiredService<ISensorService>())
             .AddHostedService<ISprinklerService>(s => s.GetRequiredService<ISprinklerService>())
-            .AddHostedService<IWateringService>(s => s.GetRequiredService<IWateringService>())
-            .AddHostedService<IInfoService>(s => s.GetRequiredService<IInfoService>());
+            .AddHostedService<IWateringService>(s => s.GetRequiredService<IWateringService>());
         
         return services;
     }

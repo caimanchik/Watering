@@ -14,7 +14,7 @@ internal class SensorService(
 {
     private readonly SensorSettings _settings = new()
     {
-        MeasurementPeriodSeconds = 5,
+        MeasurementPeriodInSeconds = 5,
     };
 
     private PeriodicTimer? _timer;
@@ -26,11 +26,11 @@ internal class SensorService(
 
         void TryUpdateSettings(SensorSettings settings)
         {
-            _settings.MeasurementPeriodSeconds = settings.MeasurementPeriodSeconds;
+            _settings.MeasurementPeriodInSeconds = settings.MeasurementPeriodInSeconds;
             InitTimer();
             // logger.LogInformation(
-            //     "Обновлены настройки сенсора. MeasurementPeriodSeconds = {MeasurementPeriodSeconds}",
-            //     _settings.MeasurementPeriodSeconds);
+            //     "Обновлены настройки сенсора. MeasurementPeriodInSeconds = {MeasurementPeriodInSeconds}",
+            //     _settings.MeasurementPeriodInSeconds);
         }
     }
     
@@ -51,13 +51,13 @@ internal class SensorService(
     {
         if (_timer is null)
         {
-            _timer = new PeriodicTimer(TimeSpan.FromSeconds(_settings.MeasurementPeriodSeconds));
+            _timer = new PeriodicTimer(TimeSpan.FromSeconds(_settings.MeasurementPeriodInSeconds));
             // logger.LogInformation("Создан таймер сенсора с периодом {Period} (ms)", _timer.Period.Milliseconds);
             while (await _timer.WaitForNextTickAsync()) 
                 OnTimerTick();
         }
         else
-            _timer.Period = TimeSpan.FromSeconds(_settings.MeasurementPeriodSeconds);
+            _timer.Period = TimeSpan.FromSeconds(_settings.MeasurementPeriodInSeconds);
     }
 
     private void OnTimerTick()
@@ -65,7 +65,7 @@ internal class SensorService(
         var sensorInfo = new SensorInfo
         {
             Humidity = groundStateService.Humidity,
-            MeasurementPeriodSeconds = _settings.MeasurementPeriodSeconds,
+            MeasurementPeriodSeconds = _settings.MeasurementPeriodInSeconds,
         };
         
         // logger.LogInformation("Измерена влажность. Показатели прибора: Humidity = {Humidity}",

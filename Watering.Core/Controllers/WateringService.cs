@@ -33,7 +33,7 @@ internal class WateringService(
             
             controlClient.SendInfo(new WateringInfo
             {
-                SprinklerMode = _settings.SprinklerMode,
+                Mode = _settings.SprinklerMode,
                 MinHumidityLevel = _settings.MinHumidityLevel,
                 MaxHumidityLevel = _settings.MaxHumidityLevel,
             });
@@ -46,6 +46,13 @@ internal class WateringService(
     {
         RegisterSettingsAction();
         RegisterInfoAction();
+        
+        controlClient.SendInfo(new WateringInfo
+        {
+            Mode = _settings.SprinklerMode,
+            MinHumidityLevel = _settings.MinHumidityLevel,
+            MaxHumidityLevel = _settings.MaxHumidityLevel,
+        });
         
         return Task.CompletedTask;
     }

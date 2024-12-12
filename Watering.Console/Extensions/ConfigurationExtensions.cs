@@ -14,6 +14,10 @@ public static class ConfigurationExtensions
         
         services.AddScoped<ICommandBase, InfoCommand>();
         services.AddScoped<ICommandBase, ExitCommand>();
+        services.AddScoped<ICommandBase, SensorSettingsCommand>();
+        services.AddScoped<ICommandBase, SprinklerSettingsCommand>();
+        services.AddScoped<ICommandBase, WateringSettingsCommand>();
+        services.AddScoped<ICommandBase, HelpCommand>();
         
         services.AddHostedService<ICommandService>(s => s.GetRequiredService<ICommandService>());
         

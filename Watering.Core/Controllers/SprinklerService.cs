@@ -18,7 +18,7 @@ internal class SprinklerService(
 
     private readonly SprinklerSettings _settings = new()
     {
-        Intensivity = 0.1f
+        Intensity = 0.1f
     };
     
     private PeriodicTimer? _timer;
@@ -30,8 +30,17 @@ internal class SprinklerService(
 
         void TryUpdateSettings(SprinklerSettings settings)
         {
-            _settings.Intensivity = settings.Intensivity;
+            _settings.Intensity = settings.Intensity;
+            if (settings.State is not null)
+            {
+                _settings.State = settings.State;
+                if (settings.State.Value.HasFlag(SprinklerState.Off))
+                    TurnOff();
+                else
+                    TurnOn();
+            }
             // logger.LogInformation("Обновлены настройки поливателя");
+            SendInformation();
         }
     }
 
@@ -39,16 +48,22 @@ internal class SprinklerService(
 
     public void TurnOn()
     {
-        // if (!State.HasFlag(SprinklerState.On))
+        if (State is SprinklerState.On)
+        {
             // logger.LogInformation("Поливатель включен");
+            return;
+        }
         State = SprinklerState.On;
         SendInformation();
     }
 
     public void TurnOff()
     {
-        // if (!State.HasFlag(SprinklerState.Off))
+        if (State is SprinklerState.Off)
+        {
             // logger.LogInformation("Поливатель выключен");
+            return;
+        }
         State = SprinklerState.Off;
         SendInformation();
     }
@@ -57,6 +72,7 @@ internal class SprinklerService(
     {
         RegisterSettingsAction();
         CreateWateringTimer();
+        SendInformation();
         
         return Task.CompletedTask;
     }
@@ -71,7 +87,7 @@ internal class SprinklerService(
     {
         client.SendInfo(new SprinklerInfo
         {
-            Intensivity = _settings.Intensivity,
+            Intensivity = _settings.Intensity,
             State = State,
         });
     }
@@ -88,6 +104,6 @@ internal class SprinklerService(
         if (State.HasFlag(SprinklerState.Off))
             return;
 
-        groundStateService.IncreaseHumidity(_settings.Intensivity);
+        groundStateService.IncreaseHumidity(_settings.Intensity);
     }
 }

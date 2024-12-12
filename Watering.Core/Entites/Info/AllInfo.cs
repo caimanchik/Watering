@@ -18,24 +18,24 @@ public partial class AllInfo
 
         if (SensorInfo is not null)
         {
-            sb.Append($"Влажность: {SensorInfo.Humidity}\n");
-            sb.Append($"Период измерения влажности: {SensorInfo.MeasurementPeriodSeconds}\n");
+            sb.AppendLine($"Влажность: {SensorInfo.Humidity}");
+            sb.AppendLine($"Период измерения влажности: {SensorInfo.MeasurementPeriodSeconds}");
         }
 
         if (SprinklerInfo is not null)
         {
-            sb.Append($"Состяние поливателя: {SprinklerInfo.State}\n");
+            sb.AppendLine($"Состяние поливателя: {SprinklerInfo.State}");
             if (SprinklerInfo.State.HasFlag(SprinklerState.On))
-                sb.Append($"Интенсивность полива: {SprinklerInfo.Intensivity}\n");
+                sb.AppendLine($"Интенсивность полива: {SprinklerInfo.Intensivity}");
         }
 
         if (WateringInfo is not null)
         {
-            sb.Append($"Режим полива: {WateringInfo.SprinklerMode}\n");
-            if (WateringInfo.SprinklerMode.HasFlag(SprinklerMode.Auto))
+            sb.AppendLine($"Режим полива: {WateringInfo.Mode}");
+            if (WateringInfo.Mode.HasFlag(SprinklerMode.Auto))
             {
-                sb.Append($"Минимальная влажность: {WateringInfo.MinHumidityLevel}\n");
-                sb.Append($"Максимальная влажность: {WateringInfo.MaxHumidityLevel}\n");
+                sb.AppendLine($"Минимальная влажность: {WateringInfo.MinHumidityLevel}");
+                sb.AppendLine($"Максимальная влажность: {WateringInfo.MaxHumidityLevel}");
             }
         }
         

@@ -12,6 +12,10 @@ public class CommandService : ICommandService
         foreach (var command in commands) 
             _commands[command.TriggerName] = command;
     }
+    
+    public IEnumerable<ICommandBase> GetCommands() => _commands.Values;
+
+    public bool TryGetCommand(string name, out ICommandBase command) => _commands.TryGetValue(name, out command);
 
     public Task StartAsync(CancellationToken ct)
     {
@@ -27,15 +31,26 @@ public class CommandService : ICommandService
         {
             System.Console.WriteLine("Введите команду");
             var input = System.Console.ReadLine();
-            var inputSplitted = input?.Split(" ");
-
-            if (!(inputSplitted?.Length > 0 && _commands.TryGetValue(inputSplitted[0].ToLower(), out var command)))
-                continue;
-
-            bool isOver = command switch
+            var parameters = input?.Split(' ');
+            
+            if (parameters?.Length > 1 && parameters[^1] == "--help")
             {
-                ICommand syncCommand => syncCommand.Execute(inputSplitted[1..]),
-                IAsyncCommand asyncCommand => await asyncCommand.ExecuteAsync(ct, inputSplitted[1..]),
+                if (_commands.TryGetValue("help", out var helpCommand))
+                    (helpCommand as ICommand)?.Execute(parameters[0]);
+                continue;
+            }
+            
+            if (!(parameters?.Length > 0 && _commands.TryGetValue(parameters[0], out var command)))
+            {
+                if (_commands.TryGetValue("help", out var helpCommand))
+                    (helpCommand as ICommand)?.Execute();
+                continue;
+            }
+            
+            var isOver = command switch
+            {
+                ICommand syncCommand => syncCommand.Execute(parameters[1..]),
+                IAsyncCommand asyncCommand => await asyncCommand.ExecuteAsync(ct, parameters[1..]),
                 _ => false
             };
 
