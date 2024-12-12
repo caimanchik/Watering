@@ -1,18 +1,17 @@
 using Watering.Console.Commands.Interfaces;
-using Watering.Domain.Ground.Services;
+using Watering.Core.Services.Interfaces;
 
 namespace Watering.Console.Commands;
 
-public class InfoCommand : ICommand
-{
-    private readonly IGroundService _groundService;
-
-    public InfoCommand(IGroundService groundService) => (_groundService) = (groundService);
-    
+public class InfoCommand(IInfoService infoService) : ICommand
+{ 
     public string TriggerName => "info";
-    
+    public string Documentation => "Command to get info";
+
     public bool Execute(params string[] args)
     {
-        throw new NotImplementedException();
+        var info = infoService.GetAllInfo();
+        System.Console.WriteLine(info);
+        return false;
     }
 }

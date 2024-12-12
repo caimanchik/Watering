@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Watering.Domain\Watering.Domain.csproj" />
+      <ProjectReference Include="..\Watering.Core\Watering.Core.csproj" />
     </ItemGroup>
 
 </Project>

@@ -10,8 +10,16 @@ public static class ConfigurationExtensions
 {
     public static IServiceCollection ConfigureConsoleApp(this IServiceCollection services)
     {
-        services.AddScoped<ICommandBase, InfoCommand>();
         services.AddScoped<ICommandService, CommandService>();
+        
+        services.AddScoped<ICommandBase, InfoCommand>();
+        services.AddScoped<ICommandBase, ExitCommand>();
+        services.AddScoped<ICommandBase, SensorSettingsCommand>();
+        services.AddScoped<ICommandBase, SprinklerSettingsCommand>();
+        services.AddScoped<ICommandBase, WateringSettingsCommand>();
+        services.AddScoped<ICommandBase, HelpCommand>();
+        
+        services.AddHostedService<ICommandService>(s => s.GetRequiredService<ICommandService>());
         
         return services;
     }

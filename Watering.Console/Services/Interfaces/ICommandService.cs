@@ -1,6 +1,10 @@
+using Microsoft.Extensions.Hosting;
+using Watering.Console.Commands.Interfaces;
+
 namespace Watering.Console.Services.Interfaces;
 
-public interface ICommandService
+public interface ICommandService : IHostedService
 {
-    void ExecuteAsync();
+    IEnumerable<ICommandBase> GetCommands();
+    bool TryGetCommand(string name, out ICommandBase command);
 }
