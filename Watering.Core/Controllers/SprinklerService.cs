@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Watering.Core.Client.Interfaces;
 using Watering.Core.Controllers.Interfaces;
-using Watering.Core.Entites;
 using Watering.Core.Entites.Enums;
 using Watering.Core.Entites.Info;
 using Watering.Core.Entites.Settings;
@@ -32,7 +31,7 @@ internal class SprinklerService(
         void TryUpdateSettings(SprinklerSettings settings)
         {
             _settings.Intensivity = settings.Intensivity;
-            logger.LogInformation("Обновлены настройки поливателя");
+            // logger.LogInformation("Обновлены настройки поливателя");
         }
     }
 
@@ -40,16 +39,16 @@ internal class SprinklerService(
 
     public void TurnOn()
     {
-        if (State is not SprinklerState.On)
-            logger.LogInformation("Поливатель включен");
+        // if (!State.HasFlag(SprinklerState.On))
+            // logger.LogInformation("Поливатель включен");
         State = SprinklerState.On;
         SendInformation();
     }
 
     public void TurnOff()
     {
-        if (State is not SprinklerState.Off)
-            logger.LogInformation("Поливатель выключен");
+        // if (!State.HasFlag(SprinklerState.Off))
+            // logger.LogInformation("Поливатель выключен");
         State = SprinklerState.Off;
         SendInformation();
     }
@@ -86,7 +85,7 @@ internal class SprinklerService(
 
     private void OnTimerTick()
     {
-        if (State is SprinklerState.Off)
+        if (State.HasFlag(SprinklerState.Off))
             return;
 
         groundStateService.IncreaseHumidity(_settings.Intensivity);

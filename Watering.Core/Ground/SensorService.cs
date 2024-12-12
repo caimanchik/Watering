@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
 using Watering.Core.Client.Interfaces;
-using Watering.Core.Entites;
 using Watering.Core.Entites.Info;
 using Watering.Core.Entites.Settings;
 using Watering.Core.Ground.Interfaces;
@@ -29,9 +28,9 @@ internal class SensorService(
         {
             _settings.MeasurementPeriodSeconds = settings.MeasurementPeriodSeconds;
             InitTimer();
-            logger.LogInformation(
-                "Обновлены настройки сенсора. MeasurementPeriodSeconds = {MeasurementPeriodSeconds}",
-                _settings.MeasurementPeriodSeconds);
+            // logger.LogInformation(
+            //     "Обновлены настройки сенсора. MeasurementPeriodSeconds = {MeasurementPeriodSeconds}",
+            //     _settings.MeasurementPeriodSeconds);
         }
     }
     
@@ -53,7 +52,7 @@ internal class SensorService(
         if (_timer is null)
         {
             _timer = new PeriodicTimer(TimeSpan.FromSeconds(_settings.MeasurementPeriodSeconds));
-            logger.LogInformation("Создан таймер сенсора с периодом {Period} (ms)", _timer.Period.Milliseconds);
+            // logger.LogInformation("Создан таймер сенсора с периодом {Period} (ms)", _timer.Period.Milliseconds);
             while (await _timer.WaitForNextTickAsync()) 
                 OnTimerTick();
         }
@@ -69,8 +68,8 @@ internal class SensorService(
             MeasurementPeriodSeconds = _settings.MeasurementPeriodSeconds,
         };
         
-        logger.LogInformation("Измерена влажность. Показатели прибора: Humidity = {Humidity}",
-            sensorInfo.Humidity);
+        // logger.LogInformation("Измерена влажность. Показатели прибора: Humidity = {Humidity}",
+        //     sensorInfo.Humidity);
 
         client.SendInfo(sensorInfo);
     }

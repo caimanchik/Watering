@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Watering.Core.Client.Interfaces;
-using Watering.Core.Entites;
 using Watering.Core.Entites.Info;
 using Watering.Core.Entites.Settings;
 

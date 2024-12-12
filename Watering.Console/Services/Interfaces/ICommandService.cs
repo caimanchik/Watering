@@ -1,6 +1,5 @@
+using Microsoft.Extensions.Hosting;
+
 namespace Watering.Console.Services.Interfaces;
 
-public interface ICommandService
-{
-    void ExecuteAsync();
-}
+public interface ICommandService : IHostedService;

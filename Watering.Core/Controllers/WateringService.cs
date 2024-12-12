@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Watering.Core.Client.Interfaces;
 using Watering.Core.Controllers.Interfaces;
-using Watering.Core.Entites;
 using Watering.Core.Entites.Enums;
 using Watering.Core.Entites.Info;
 using Watering.Core.Entites.Settings;
@@ -55,19 +54,19 @@ internal class WateringService(
     
     private void HandleInfoChange(SensorInfo sensorInfo)
     {
-        if (_settings.SprinklerMode is SprinklerMode.Manual)
+        if (_settings.SprinklerMode.HasFlag(SprinklerMode.Manual))
             return;
         
         if (sensorInfo.Humidity < _settings.MinHumidityLevel)
         {
-            logger.LogInformation("Влажность {Humidity} меньше минимальной влажности {MinHumidity}",
-                sensorInfo.Humidity, _settings.MinHumidityLevel);
+            // logger.LogInformation("Влажность {Humidity} меньше минимальной влажности {MinHumidity}",
+            //     sensorInfo.Humidity, _settings.MinHumidityLevel);
             sprinklerService.TurnOn();
         }
         else if (sensorInfo.Humidity > _settings.MaxHumidityLevel)
         {
-            logger.LogInformation("Влажность {Humidity} больше максимальной влажности {MaxHumidity}",
-                sensorInfo.Humidity, _settings.MaxHumidityLevel);
+            // logger.LogInformation("Влажность {Humidity} больше максимальной влажности {MaxHumidity}",
+            //     sensorInfo.Humidity, _settings.MaxHumidityLevel);
             sprinklerService.TurnOff();
         }
     }

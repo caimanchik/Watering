@@ -3,6 +3,4 @@ using Watering.Core.ServicesBase.Interfaces;
 
 namespace Watering.Core.Ground.Interfaces;
 
-internal interface ISensorService : ISettingsChangeService, IHostedService
-{
-}
+internal interface ISensorService : ISettingsChangeService, IHostedService;

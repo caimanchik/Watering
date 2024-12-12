@@ -1,7 +1,8 @@
 namespace Watering.Core.Entites.Enums;
 
+[Flags]
 public enum SprinklerMode
 {
-    Auto,
-    Manual,
+    Auto = 0,
+    Manual = 1,
 }
