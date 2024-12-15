@@ -1,8 +1,9 @@
+using Microsoft.Extensions.Hosting;
 using Watering.Core.Entites.Info;
 
 namespace Watering.Core.Client.Interfaces;
 
-public interface IClient
+public interface IClient : IHostedService
 {
-    void RegisterInfoChange<T>(Action<T> action) where T: InfoBase;
+    void RegisterInfoChange<T>(Func<T, Task> action) where T: InfoBase;
 }

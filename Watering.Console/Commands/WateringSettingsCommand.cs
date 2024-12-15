@@ -5,11 +5,11 @@ using Watering.Core.Entites.Settings;
 
 namespace Watering.Console.Commands;
 
-public class WateringSettingsCommand(IWateringClient wateringClient) : ICommand
+public class WateringSettingsCommand(IWateringClient wateringClient) : IAsyncCommand
 {
     public string TriggerName => "watering";
     public string Documentation => "Sets the watering settings. 1 - Mode; 2 - MinHumidityLevel; 3 - MaxHumidityLevel";
-    public bool Execute(params string[] args)
+    public async Task<bool> ExecuteAsync(params string[] args)
     {
         if (args.Length < 3)
             return false;
@@ -19,7 +19,7 @@ public class WateringSettingsCommand(IWateringClient wateringClient) : ICommand
             || !float.TryParse(args[2], out var maxHumidityLevel))
             return false;
 
-        wateringClient.SendSettingsChange(new WateringSettings
+        await wateringClient.SendSettingsChange(new WateringSettings
         {
             SprinklerMode = mode,
             MinHumidityLevel = minHumidityLevel,

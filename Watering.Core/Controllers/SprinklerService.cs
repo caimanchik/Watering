@@ -28,7 +28,7 @@ internal class SprinklerService(
         client.RegisterSettingsChange<SprinklerSettings>(TryUpdateSettings);
         return;
 
-        void TryUpdateSettings(SprinklerSettings settings)
+        async Task TryUpdateSettings(SprinklerSettings settings)
         {
             _settings.Intensity = settings.Intensity;
             if (settings.State is not null)
@@ -40,13 +40,13 @@ internal class SprinklerService(
                     TurnOn();
             }
             // logger.LogInformation("Обновлены настройки поливателя");
-            SendInformation();
+            await SendInformation();
         }
     }
 
     public SprinklerState State { get; private set; } = SprinklerState.Off;
 
-    public void TurnOn()
+    public async Task TurnOn()
     {
         if (State is SprinklerState.On)
         {
@@ -54,10 +54,10 @@ internal class SprinklerService(
             return;
         }
         State = SprinklerState.On;
-        SendInformation();
+        await SendInformation();
     }
 
-    public void TurnOff()
+    public async Task TurnOff()
     {
         if (State is SprinklerState.Off)
         {
@@ -65,16 +65,14 @@ internal class SprinklerService(
             return;
         }
         State = SprinklerState.Off;
-        SendInformation();
+        await SendInformation();
     }
     
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         RegisterSettingsAction();
         CreateWateringTimer();
-        SendInformation();
-        
-        return Task.CompletedTask;
+        await SendInformation();
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
@@ -83,9 +81,9 @@ internal class SprinklerService(
         return Task.CompletedTask;
     }
 
-    private void SendInformation()
+    private async Task SendInformation()
     {
-        client.SendInfo(new SprinklerInfo
+        await client.SendInfo(new SprinklerInfo
         {
             Intensivity = _settings.Intensity,
             State = State,

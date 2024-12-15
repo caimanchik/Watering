@@ -3,7 +3,7 @@ using Watering.Core.Ground.Interfaces;
 
 namespace Watering.Core.Ground;
 
-public class GroundStateService : IGroundStateService
+internal class GroundStateService : IGroundStateService
 {
     private readonly GroundState _state = new();
     private PeriodicTimer? _timer;

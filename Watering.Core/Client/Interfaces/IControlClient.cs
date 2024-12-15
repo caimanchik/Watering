@@ -5,6 +5,6 @@ namespace Watering.Core.Client.Interfaces;
 
 internal interface IControlClient : IClient
 {
-    void RegisterSettingsChange<T>(Action<T> action) where T: SettingsBase;
-    void SendInfo(InfoBase info);
+    void RegisterSettingsChange<T>(Func<T, Task> action) where T: SettingsBase;
+    Task SendInfo(InfoBase info);
 }

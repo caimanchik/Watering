@@ -4,7 +4,7 @@ using Watering.Core.Services.Interfaces;
 
 namespace Watering.Core.Services;
 
-public class InfoService(IWateringClient wateringClient) : IInfoService
+internal class InfoService(IWateringClient wateringClient) : IInfoService
 {
     private AllInfo AllInfo { get; set; } = new(null, null, null);
 
@@ -25,7 +25,7 @@ public class InfoService(IWateringClient wateringClient) : IInfoService
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
-    private void HandleInfoChange(InfoBase info)
+    private Task HandleInfoChange(InfoBase info)
     {
         AllInfo = info switch
         {
@@ -34,5 +34,7 @@ public class InfoService(IWateringClient wateringClient) : IInfoService
             WateringInfo wateringInfo => new AllInfo(AllInfo.SensorInfo, AllInfo.SprinklerInfo, wateringInfo),
             _ => AllInfo
         };
+        
+        return Task.CompletedTask;
     }
 }
