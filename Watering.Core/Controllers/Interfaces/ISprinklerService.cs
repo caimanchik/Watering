@@ -8,7 +8,7 @@ internal interface ISprinklerService : ISettingsChangeService, IHostedService
 {
     SprinklerState State { get; }
 
-    void TurnOn();
+    Task TurnOn();
 
-    void TurnOff();
+    Task TurnOff();
 }

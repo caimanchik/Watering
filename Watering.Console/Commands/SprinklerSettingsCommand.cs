@@ -5,11 +5,11 @@ using Watering.Core.Entites.Settings;
 
 namespace Watering.Console.Commands;
 
-public class SprinklerSettingsCommand(IWateringClient wateringClient) : ICommand
+public class SprinklerSettingsCommand(IWateringClient wateringClient) : IAsyncCommand
 {
     public string TriggerName => "sprinkler";
     public string Documentation => "Sprinkler settings command. 1 - Intensity: 2 - [CanBeNull] State";
-    public bool Execute(params string[] args)
+    public async Task<bool> ExecuteAsync(params string[] args)
     {
         if (args.Length < 1 || !float.TryParse(args[0], out var intensity))
             return false;
@@ -21,7 +21,7 @@ public class SprinklerSettingsCommand(IWateringClient wateringClient) : ICommand
         if (args.Length == 2 && Enum.TryParse(args[1], out SprinklerState state))
             settings.State = state;
 
-        wateringClient.SendSettingsChange(settings);
+        await wateringClient.SendSettingsChange(settings);
         return false;
     }
 }

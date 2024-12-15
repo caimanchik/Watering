@@ -6,24 +6,32 @@ using Microsoft.Extensions.Logging;
 using Watering.Console.Extensions;
 using Watering.Core.Extensions;
 
-var hostBuilder = Host.CreateDefaultBuilder()
+var builder = Host.CreateDefaultBuilder();
+
+builder
     .ConfigureLogging(logging =>
     {
         logging.ClearProviders();
         logging.AddConsole();
-    })
-    .ConfigureAppConfiguration(builder =>
+    });
+
+builder
+    .ConfigureAppConfiguration(b =>
     {
-        builder.AddJsonFile("appsettings.json", optional: false);
-    })
+        b.AddJsonFile("appsettings.json", optional: false);
+    });
+
+builder
     .ConfigureServices((context, services) =>
     {
         services
+            .ConfigureMqtt(c => context.Configuration.Bind("Mqtt", c));
+        
+        services
             .ConfigureCore()
             .ConfigureConsoleApp();
-        // services.Configure<Options>(c => context.Configuration.Bind("Options", c)); // пригодится в следующей лабораторной работе
     });
 
-var app = hostBuilder.Build();
+var app = builder.Build();
 
 await app.RunAsync();

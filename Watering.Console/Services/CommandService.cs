@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Hosting;
 using Watering.Console.Commands.Interfaces;
 using Watering.Console.Services.Interfaces;
 
@@ -5,10 +6,12 @@ namespace Watering.Console.Services;
 
 public class CommandService : ICommandService
 {
+    private readonly IHostApplicationLifetime _lifetime;
     private readonly Dictionary<string, ICommandBase> _commands = new();
 
-    public CommandService(IEnumerable<ICommandBase> commands)
+    public CommandService(IEnumerable<ICommandBase> commands, IHostApplicationLifetime lifetime)
     {
+        _lifetime = lifetime;
         foreach (var command in commands) 
             _commands[command.TriggerName] = command;
     }
@@ -50,12 +53,14 @@ public class CommandService : ICommandService
             var isOver = command switch
             {
                 ICommand syncCommand => syncCommand.Execute(parameters[1..]),
-                IAsyncCommand asyncCommand => await asyncCommand.ExecuteAsync(ct, parameters[1..]),
+                IAsyncCommand asyncCommand => await asyncCommand.ExecuteAsync(parameters[1..]),
                 _ => false
             };
 
-            if (isOver)
-                return;
+            if (!isOver) continue;
+            
+            _lifetime.StopApplication();
+            return;
         }
     }
 }

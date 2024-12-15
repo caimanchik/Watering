@@ -24,13 +24,16 @@ internal class SensorService(
         client.RegisterSettingsChange<SensorSettings>(TryUpdateSettings);
         return;
 
-        void TryUpdateSettings(SensorSettings settings)
+        Task TryUpdateSettings(SensorSettings settings)
         {
             _settings.MeasurementPeriodInSeconds = settings.MeasurementPeriodInSeconds;
             InitTimer();
+            
             // logger.LogInformation(
             //     "Обновлены настройки сенсора. MeasurementPeriodInSeconds = {MeasurementPeriodInSeconds}",
             //     _settings.MeasurementPeriodInSeconds);
+            
+            return Task.CompletedTask;
         }
     }
     

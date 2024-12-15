@@ -4,5 +4,5 @@ namespace Watering.Core.Client.Interfaces;
 
 public interface IWateringClient : IClient
 {
-    void SendSettingsChange(SettingsBase settings);
+    Task SendSettingsChange(SettingsBase settings);
 }
