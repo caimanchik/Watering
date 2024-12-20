@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Watering.Console.Extensions;
 using Watering.Core.Extensions;
+using Watering.Bot.Extensions;
 
 var builder = Host.CreateDefaultBuilder();
 
@@ -18,18 +19,22 @@ builder
 builder
     .ConfigureAppConfiguration(b =>
     {
-        b.AddJsonFile("appsettings.json", optional: false);
+        b
+            .AddJsonFile("appsettings.json", optional: false)
+            .AddUserSecrets<Program>();
     });
 
 builder
     .ConfigureServices((context, services) =>
     {
         services
-            .ConfigureMqtt(c => context.Configuration.Bind("Mqtt", c));
-        
+            .ConfigureMqtt(c => context.Configuration.Bind("Mqtt", c))
+            .ConfigureBot(c => context.Configuration.Bind("Bot", c));
+
         services
-            .ConfigureCore()
-            .ConfigureConsoleApp();
+            .AddCore()
+            // .AddConsoleApp()
+            .AddBot();
     });
 
 var app = builder.Build();

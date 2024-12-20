@@ -8,7 +8,7 @@ namespace Watering.Console.Extensions;
 
 public static class ConfigurationExtensions
 {
-    public static IServiceCollection ConfigureConsoleApp(this IServiceCollection services)
+    public static IServiceCollection AddConsoleApp(this IServiceCollection services)
     {
         services.AddScoped<ICommandService, CommandService>();
         
