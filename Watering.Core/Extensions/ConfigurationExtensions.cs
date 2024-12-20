@@ -18,7 +18,7 @@ public static class ConfigurationExtensions
     public static IServiceCollection ConfigureMqtt(this IServiceCollection services, Action<MqttOptions> action) 
         => services.Configure(action);
 
-    public static IServiceCollection ConfigureCore(this IServiceCollection services)
+    public static IServiceCollection AddCore(this IServiceCollection services)
     {
         services
             .AddSingleton<WateringClient>(p =>
